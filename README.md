@@ -6,7 +6,7 @@
 
 <br />
 
-open iTerm or Terminal and change directory automatically by alfred workflow.
+open iTerm or Terminal and change directory automatically by alfred workflow. [click to download](https://github.com/OneForCheng/cd-alfred-workflow/releases/download/0.1.1/cd-0.1.1.alfredworkflow)
 
 ![img1](img/img1.png)
 
