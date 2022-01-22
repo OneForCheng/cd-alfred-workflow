@@ -1,8 +1,8 @@
 # CD alfred workflow
 
-<div style="text-align: center">
+<p align="center">
     <img src="./icon.png" alt="cd logo" width="128" height="128" />
-</div>
+</p>
 
 <br />
 
