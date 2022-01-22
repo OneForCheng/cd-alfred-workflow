@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>io.github.oneforcheng.alfred.cd</string>
+	<key>category</key>
+	<string>Tools</string>
+	<key>connections</key>
+	<dict>
+		<key>79F0D0E4-6438-4FE8-9923-69B82732B88E</key>
+		<array/>
+		<key>D6035C60-720B-4F78-AA5B-8ADF27A93F52</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>79F0D0E4-6438-4FE8-9923-69B82732B88E</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+		<key>F03FE83A-E579-45C6-834D-8EDB5A25F572</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>D6035C60-720B-4F78-AA5B-8ADF27A93F52</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+				<key>vitoclose</key>
+				<false/>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>oneforcheng</string>
+	<key>description</key>
+	<string>open iTerm or Terminal and change directory automatically</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>CD</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>0</integer>
+				<key>focusedappvariable</key>
+				<false/>
+				<key>focusedappvariablename</key>
+				<string></string>
+				<key>hotkey</key>
+				<integer>49</integer>
+				<key>hotmod</key>
+				<integer>524288</integer>
+				<key>hotstring</key>
+				<string>Space</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>F03FE83A-E579-45C6-834D-8EDB5A25F572</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>concurrently</key>
+				<false/>
+				<key>escaping</key>
+				<integer>127</integer>
+				<key>script</key>
+				<string>#!/bin/bash
+
+FILE={query}
+
+if [ -d "${FILE}" ]; then
+  DIR=${FILE}
+else
+  if [ -f "${FILE}" ]; then
+    DIR=$(dirname "${FILE}")
+  else
+    exit 1
+  fi
+fi
+
+osascript &lt;&lt; END
+    if application "iTerm" is running then
+        activate application "iTerm"
+        tell application "iTerm"
+            try
+                tell current session of current window
+                    write text "cd ${DIR}"
+                end tell
+            on error
+                set newWindow to (create window with default profile)
+                tell current session of newWindow
+                    write text "cd ${DIR}"
+                end tell
+            end try
+        end tell
+    else
+        try
+            tell application "iTerm"
+                activate
+                delay 0.1
+                tell application "iTerm"
+                  tell current session of current window
+                    write text "cd ${DIR}"
+                  end tell
+                end tell
+            end tell
+        on error
+            tell application "Terminal"
+                activate
+                do script "cd ${DIR}" in window 1
+            end tell
+        end try
+    end if
+END</string>
+				<key>scriptargtype</key>
+				<integer>0</integer>
+				<key>scriptfile</key>
+				<string></string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>79F0D0E4-6438-4FE8-9923-69B82732B88E</string>
+			<key>version</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>anchorfields</key>
+				<true/>
+				<key>argumenttrimmode</key>
+				<integer>0</integer>
+				<key>argumenttype</key>
+				<integer>0</integer>
+				<key>daterange</key>
+				<integer>0</integer>
+				<key>fields</key>
+				<array>
+					<dict>
+						<key>field</key>
+						<string>kMDItemDisplayName</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>field</key>
+						<string>kMDItemAlternateNames</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+					<dict>
+						<key>field</key>
+						<string>kMDItemFinderComment</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+				</array>
+				<key>includesystem</key>
+				<false/>
+				<key>keyword</key>
+				<string>cd</string>
+				<key>runningsubtext</key>
+				<string></string>
+				<key>scopes</key>
+				<array/>
+				<key>subtext</key>
+				<string>Please input to match</string>
+				<key>title</key>
+				<string>CD directory (of file)</string>
+				<key>types</key>
+				<array/>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.filefilter</string>
+			<key>uid</key>
+			<string>D6035C60-720B-4F78-AA5B-8ADF27A93F52</string>
+			<key>version</key>
+			<integer>1</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>79F0D0E4-6438-4FE8-9923-69B82732B88E</key>
+		<dict>
+			<key>xpos</key>
+			<integer>470</integer>
+			<key>ypos</key>
+			<integer>180</integer>
+		</dict>
+		<key>D6035C60-720B-4F78-AA5B-8ADF27A93F52</key>
+		<dict>
+			<key>xpos</key>
+			<integer>290</integer>
+			<key>ypos</key>
+			<integer>180</integer>
+		</dict>
+		<key>F03FE83A-E579-45C6-834D-8EDB5A25F572</key>
+		<dict>
+			<key>xpos</key>
+			<integer>100</integer>
+			<key>ypos</key>
+			<integer>180</integer>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>https://oneforcheng.github.io/</string>
+</dict>
+</plist>
