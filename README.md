@@ -34,7 +34,12 @@ input name of file to query:
 
 <br />
 
-
 ### Note
 
 if you don't install iTerm, `cd` will open Terminal instead of iTerm.
+
+<br />
+
+### License
+
+This project is licensed under [MIT license](http://opensource.org/licenses/MIT). For the full text of the license, see the [LICENSE](LICENSE) file.
